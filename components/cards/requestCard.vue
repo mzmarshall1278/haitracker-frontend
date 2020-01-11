@@ -2,8 +2,8 @@
     <v-flex  xs12 sm6 md4 pa-1>
         <v-card class="mx-auto" max-width="700"> 
             <v-card-text class="marshall--text py-1">
-                <h3 class="title">Persons Name</h3>
-            <p>This Person is your whatever</p>
+                <h3 class="title">{{request.userId.name}}</h3>
+            <p>This Person is your {{request.personIs}}</p>
             </v-card-text>
             <v-card-actions>
                 <div v-if="sent">
@@ -38,19 +38,33 @@
 </template>
 <script>
 export default {
-    props: ['sent'],
+    props: ['sent', 'request'],
+    data(){
+        return {
+            cred : {id : this.request.userId._id, youAre : this.request.youAre, personIs : this.request.personIs}
+        }
+    },
     methods : {
-        processRequest(bool){
-            return this.$store.dispatch('processRequest', bool)
+
+        redirect(){
+            if(!this.err){
+                this.$router.push('/team');
+            }
         },
         cancelRequest(){
-            this.processRequest('no')
-        }, 
+            return this.$store.dispatch('cancelRequest', this.cred).then(() => {
+                this.redirect();
+            })
+        },
         accept(){
-            this.processRequest('yes')
+            return this.$store.dispatch('acceptRequest', this.cred).then(() => {
+                this.redirect();
+            })
         }, 
         decline(){
-            this.processRequest('no')
+            return this.$store.dispatch('declineRequest', this.cred).then(() => {
+                this.redirect();
+            })
         },
     }
 }

@@ -37,6 +37,10 @@
     import sent from '~/components/sentRequests'
     import recieved from '~/components/recievedRequests'
   export default {
+    middleware:[
+    'checkAuth',    
+    'Auth'
+    ],
       components : { sent, recieved},
     data () {
       return {

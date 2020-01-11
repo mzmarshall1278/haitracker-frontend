@@ -1,12 +1,12 @@
 <template>
-    <v-flex xs12 sm6 md4 pa-1>
+    <v-flex xs12 sm6 pa-1>
         <v-card
             class="mx-auto"
             max-width="500"
         >
          <v-card-text class="title marshall--text text-center">
-            <p>Name : {{member.name}}</p>
-            <p>Relationship : {{member.relationship}}</p>
+            <p>Name : {{member.userId.name}}</p>
+            <p>Relationship : {{member.personIs}}</p>
             </v-card-text>
             <v-card-actions>
             <v-btn
@@ -26,7 +26,7 @@ export default {
     props : ['member'],
     methods : {
         loadThis(){
-            this.$router.push(`/team/${memeber._id}`)
+            this.$router.push(`/team/${this.member._id}`)
         }
     }
 }

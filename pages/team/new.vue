@@ -87,8 +87,10 @@ export default {
           }
           
             return this.$store.dispatch('requestConnection', cred ).then(()=>{
-                this.$router.push('/team')
+                if(!this.err){
+                    this.$router.push('/team')
                 this.$refs.form.reset()
+                }
           })    
           
             }

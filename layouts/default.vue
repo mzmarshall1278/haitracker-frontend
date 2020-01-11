@@ -88,7 +88,7 @@
       class="marshall"
       dark
     >
-      <span>&copy; Marshall  Techology 2019</span>
+      <span>&copy; Marshall  Techology&trade; 2019  </span>
     </v-footer>
   </v-app>
 </template>
@@ -100,7 +100,58 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
-      items: [
+      // items: [
+      //   {
+      //     icon: 'mdi-apps',
+      //     title: 'Home',
+      //     to: '/'
+      //   },
+      //   {
+      //     icon: 'mdi-apps',
+      //     title: 'Team',
+      //     to: '/team'
+      //   },
+      //   {
+      //     icon: 'mdi-chart-bubble',
+      //     title: 'locations',
+      //     to: '/locations'
+      //   },
+      //   {
+      //     icon: 'mdi-chart-bubble',
+      //     title: 'requests',
+      //     to: '/team/requests'
+      //   }
+      // ],
+      miniVariant: false,
+      right: true,
+      rightDrawer: false,
+      title: 'HaiTracker'
+    }
+  },
+  computed: {
+    user(){
+      return this.$store.state.token
+    },
+    items(){
+      let items = [
+        {
+          icon: 'mdi-home',
+          title: 'home',
+          to: '/'
+        },
+        {
+          icon: 'mdi-account-key',
+          title: 'login',
+          to: '/auth/login'
+        },
+      ];
+      if(this.user){
+       items = [
+        {
+          icon: 'mdi-apps',
+          title: 'Home',
+          to: '/home'
+        },
         {
           icon: 'mdi-apps',
           title: 'Team',
@@ -109,23 +160,17 @@ export default {
         {
           icon: 'mdi-chart-bubble',
           title: 'locations',
-          to: '/inspire'
+          to: '/locations'
         },
         {
           icon: 'mdi-chart-bubble',
           title: 'requests',
           to: '/team/requests'
         }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'HAI Tracker'
-    }
-  },
-  computed: {
-    user(){
-      return this.$store.state.token
+        
+      ]
+      return items;
+      }
     }
   },
   methods :{
@@ -136,8 +181,9 @@ export default {
       this.$router.push('/auth/login');
     },  
     logout(){
-      return this.$store.dispatch('logout')
       this.$router.push('/auth/login');
+      return this.$store.dispatch('logout')
+      
     }
   }
 }

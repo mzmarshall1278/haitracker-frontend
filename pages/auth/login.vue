@@ -81,7 +81,7 @@
           }
           
           return this.$store.dispatch('login', cred ).then(()=>{
-            this.$router.push('/')
+            this.$router.push('/home')
             this.$refs.form.reset()
           })
           

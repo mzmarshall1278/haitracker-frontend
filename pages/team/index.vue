@@ -1,15 +1,15 @@
 <template>
     <div class="container">
         <pageTitle pageTitle="My Team" />
-        <!-- <ErrorTip :text="err" v-if="err" /> -->
-        <!-- <OverLay :loading="loading" /> -->
+        <ErrorTip :text="err" v-if="err" />
+        <OverLay :loading="loading" />
         <v-layout row wrap class="mx-auto my-2 ">
             <v-btn class="marshall--text" @click="newMember">Add Member</v-btn>    
         </v-layout>    
         <v-layout row wrap class="mx-auto">
             <card v-for="(member, key) in members" :key="key" :member="member" />
         </v-layout>
-
+       
     </div>
 </template>
 <script>
@@ -42,6 +42,9 @@ export default {
         newMember(){
             this.$router.push('/team/new')
         }
+    },
+    mounted(){
+        return this.$store.dispatch('getTeam');
     }
 }
 </script>

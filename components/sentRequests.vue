@@ -4,7 +4,8 @@
         <OverLay :loading="loading" />
 
         <v-layout row wrap class="mx-auto">
-            <card  :sent="true"/>
+            <card  :sent="true" v-for="(request, key) in requests" :key="key" :request="request"/>
+
         </v-layout>
     </div>
 </template>
@@ -17,7 +18,7 @@ export default {
             return this.$store.state.user
         },
         requests(){
-            
+            return this.$store.state.sentRequests
         },
           err(){
         return this.$store.getters.error
@@ -27,7 +28,7 @@ export default {
       }
     },
     mounted(){
-        return this.$store.dispatch('getSentRequests')
+        return this.$store.dispatch('getSentRequests');
     }
 }
 </script>

@@ -1,23 +1,5 @@
 <template>
-  <v-layout
-    column
-    justify-center
-    align-center
-  >
-    <pageTitle pageTitle="Home" />
-  </v-layout>
+    <div class="">
+        
+    </div>
 </template>
-
-<script>
-
-
-export default {
-  middleware:[
-    'checkAuth',    
-    'Auth'
-    ],
-  components: {
-   
-  }
-}
-</script>

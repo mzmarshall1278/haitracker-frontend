@@ -6,21 +6,29 @@ const createStore = () => {
     return new vuex.Store({
         state : {
             name : "Muhammad",
-            members : [
-                {_id : '0987ytrdfghjuy',name : "MZ Marshall", relationship : "Boss",},
-                {_id : '0982hjbjgghjuy',name : "Rizqat Marshall", relationship : "Bosser",},
-                {_id : '0987ytrdfghjuy',name : "Harris Abubakar", relationship : "Father",},
-                {_id : 'jhgvufytgbfufb',name : "Ahmad Haruna", relationship : "Brother",},
-                {_id : 'njiohiuofefewe',name : "Bilqees Sani", relationship : "Sister-in-law",},
-                {_id : 'uibyfvytfbuyfb',name : "Max Payne", relationship : "Neighbour",},
-            ],
+            members : '',
             user : '',
             token : null,
             error : null,
             loading : false,
-            sentRequests : ''
+            sentRequests : '',
+            recievedRequests : '',
+            singleUser : '',
+            location: ''
         },
         mutations : {
+            updateLocation(state, payload){
+                state.location = payload
+            },
+            getUser(state, payload){
+                state.singleUser = payload
+            },
+            setTeam(state, payload){
+                state.members = payload.team
+            },
+            recievedRequests(state, payload){
+                state.recievedRequests = payload
+            },
             sentRequests(state, payload){
                 state.sentRequests = payload
             },
@@ -46,6 +54,54 @@ const createStore = () => {
         },
 
         actions : {
+
+            updateMyLocation(context, payload){
+                let pos;
+                let user;
+                const address = payload;
+                if(!navigator.geolocation){
+                    return "Sorry, Your Browser does not support location"
+                  }
+                   // context.commit('setLoading', true);
+                    context.commit('clearError');
+
+                  navigator.geolocation.getCurrentPosition(poss => {
+                    pos = poss;
+                    user = context.state.user
+                    console.log(poss);
+                    return axios.put(`http://localhost:4000/locations/${user}`, {lat : pos.coords.latitude, lon : pos.coords.longitude, address, dateTime : new Date},{
+                        headers:{
+                            Authorization: `Bearer ${context.state.token}`
+                        }
+                    }).then(res => {
+                        context.commit('setLoading', false);  
+                        context.commit('updateLocation', pos.coords);
+                    });
+                  }, err => {
+                    context.commit('setLoading', false);  
+                    context.commit('setError', err.message);
+                  }, {
+                    enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }  
+                     )
+            },
+            getTeam(context){
+                context.commit('setLoading', true);
+                context.commit('clearError');
+                return axios.get(`http://localhost:4000/team/${context.state.user}`, {
+                    headers:{
+                        Authorization: `Bearer ${context.state.token}`
+                    }
+                }).then(res => {
+                   // console.log(res)
+                    context.commit('setLoading', false);  
+                    context.commit('setTeam', res.data.user);
+                    context.commit('getUser', res.data.user);
+                }).catch(err => {
+                    context.commit('setLoading', false);
+                    context.commit('setError', err.response.data.message);
+                })
+            },
+
             logout(context){
                 context.commit('clearToken');
                 Cookie.remove('jwt');
@@ -56,17 +112,90 @@ const createStore = () => {
                     localStorage.removeItem('userId');
                     localStorage.removeItem('tokenExpiration');
                 }
-                context.user = "";
+                context.state.user = "";
 
             },
             //get all the recieved requests
             getSentRequests(context){
+                // console.log(context)
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.get(`http://localhost:4000/team/getSentRequests/${context.state.user}`).then(res => {   
-                    console.log(res.data)
+                return axios.get(`http://localhost:4000/team/getSentRequests/${context.state.user}`, {
+                    headers:{
+                        Authorization: `Bearer ${context.state.token}`
+                    }
+                }).then(res => {   
+                    //console.log(res.data)
                     context.commit('setLoading', false);   
-                    commit('sentRequests', res.data)
+                    context.commit('sentRequests', res.data.result);
+                }).catch(err => {
+                    context.commit('setLoading', false);
+                    context.commit('setError', err.response.data.message);
+                });
+            },
+
+            getRecievedRequests(context){
+                context.commit('setLoading', true);
+                context.commit('clearError');
+                return axios.get(`http://localhost:4000/team/getRecievedRequests/${context.state.user}`, {
+                    headers:{
+                        Authorization: `Bearer ${context.state.token}`
+                    }
+                }).then(res => {
+                    context.commit('setLoading', false);  
+                    context.commit('recievedRequests', res.data.result);
+                    
+                }).catch(err => {
+                    context.commit('setLoading', false);
+                    context.commit('setError', err.response.data.message);
+                });
+            },
+
+            acceptRequest(context, payload){
+                context.commit('setLoading', true);
+                context.commit('clearError');
+                return axios.put(`http://localhost:4000/team/acceptRequest/${context.state.user}`, payload, {
+                    headers:{
+                        Authorization: `Bearer ${context.state.token}`
+                    }
+                }).then(res => {
+                    context.commit('setLoading', false);  
+                    // context.dispatch('recievedRequests', res.data.result);
+                    
+                }).catch(err => {
+                    context.commit('setLoading', false);
+                    context.commit('setError', err.response.data.message);
+                });
+            },
+
+            cancelRequest(context, payload){
+                context.commit('setLoading', true);
+                context.commit('clearError');
+                return axios.put(`http://localhost:4000/team/cancelRequest/${context.state.user}`, payload, {
+                    headers:{
+                        Authorization: `Bearer ${context.state.token}`
+                    }
+                }).then(res => {
+                    context.commit('setLoading', false);  
+                    // context.dispatch('recievedRequests', res.data.result);
+                    
+                }).catch(err => {
+                    context.commit('setLoading', false);
+                    context.commit('setError', err.response.data.message);
+                });
+            },
+
+            declineRequest(context, payload){
+                context.commit('setLoading', true);
+                context.commit('clearError');
+                return axios.put(`http://localhost:4000/team/declineRequest/${context.state.user}`, payload, {
+                    headers:{
+                        Authorization: `Bearer ${context.state.token}`
+                    }
+                }).then(res => {
+                    context.commit('setLoading', false);  
+                    // context.dispatch('recievedRequests', res.data.result);
+                    
                 }).catch(err => {
                     context.commit('setLoading', false);
                     context.commit('setError', err.response.data.message);
@@ -146,9 +275,13 @@ const createStore = () => {
             requestConnection(context, payload){
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.put(`http://localhost:4000/team/sendRequest?userId=${context.state.user}`, payload).then(res => {
+                return axios.put(`http://localhost:4000/team/sendRequest?userId=${context.state.user}`, payload, {
+                    headers:{
+                        Authorization: `Bearer ${context.state.token}`
+                    }
+                }).then(res => {
                     context.commit('setLoading', false);
-                    console.log(res.data)
+                    console.log(res.data);
                 }).catch(err=> {
                     console.log(err.response.data)
                     context.commit('setLoading', false);
@@ -168,6 +301,9 @@ const createStore = () => {
             },
             error(state){
                 return state.error
+            },
+            getUser(state){
+            return id =>  state.members.find(mem => mem._id === id)
             }
         }
     })
