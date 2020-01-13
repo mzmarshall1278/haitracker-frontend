@@ -50,17 +50,19 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
   ],
-  pwa : {
+  pwa:{
     icon: {
-      iconSrc: './static'
+      iconSrc: './static/one.jpg'
     },
+  },
+    
     manifest :{
       short_name : 'HaiTracker', 
       name :  'HaiTracker',
       start_url : '/',
       theme_color : '#311B92',
-    }
-  },
+    },
+  
  
   /*
   ** Axios module configuration
