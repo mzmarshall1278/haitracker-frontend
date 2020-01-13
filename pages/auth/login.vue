@@ -3,7 +3,7 @@
         <pageTitle pageTitle ="Login" class="my-2"></pageTitle>
         <ErrorTip :text="err" v-if="err" />
         <OverLay :loading="loading" />
-        <v-card class="mx-auto pa-10">
+        <v-card class="mx-auto pa-10 ">
             <v-form
             ref="form"
             v-model="valid"
@@ -36,7 +36,7 @@
                 >
                 Sign Up
                 </v-btn>
-                <nuxt-link to="/auth/signup" class="marshall--text"> Already have account? </nuxt-link>
+                <nuxt-link to="/auth/signup" class="marshall--text "> Don't have account? </nuxt-link>
                 
             </v-form>
         </v-card>

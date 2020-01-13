@@ -172,6 +172,15 @@ export default {
       return items;
       }
     }
+    
+  },
+
+  watch : {
+    user(val){
+        if(!val){
+          this.$router.push('/auth/login');
+        }
+    }
   },
   methods :{
     login(){

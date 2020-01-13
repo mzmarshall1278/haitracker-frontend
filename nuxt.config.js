@@ -50,6 +50,15 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
   ],
+  icon : {
+    iconSrs : './static/logo.jpg'
+  },
+  manifest :{
+    short_name : 'HaiTracker', 
+    name :  'HaiTracker',
+    start_url : '/',
+    theme_color : 'purple',
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
