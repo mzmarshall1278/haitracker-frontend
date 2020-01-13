@@ -26,6 +26,13 @@
                 ></v-text-field>
 
                 <v-text-field
+                v-model="place"
+                :rules="placeRules"
+                label="location : (At school, BUK Kano)"
+                required
+                ></v-text-field>
+
+                <v-text-field
                 v-model="number"
                 type="number"
                 :rules="numberRules"
@@ -88,6 +95,11 @@
         v => !!v || 'Number is required',
         v => (v && v.length >= 10) || 'Phone NUmber should be more than 10 characters',
       ],
+      place : '',
+      placeRules:[
+        v => !!v || 'location is required',
+        v => (v && v.length >= 10) || 'Description should be more than 10 characters',
+      ],
       gender :"",
       gen: [
               { text: 'Male' },
@@ -115,7 +127,8 @@
               email : this.email, 
               gender : this.gender,
               phone : this.number,
-              password : this.password
+              password : this.password,
+              place : this.place
           }
           
           return this.$store.dispatch('signup', cred ).then(()=>{

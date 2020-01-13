@@ -62,7 +62,7 @@ const createStore = () => {
                 if(!navigator.geolocation){
                     return "Sorry, Your Browser does not support location"
                   }
-                   // context.commit('setLoading', true);
+                    context.commit('setLoading', true);
                     context.commit('clearError');
 
                   navigator.geolocation.getCurrentPosition(poss => {
@@ -237,15 +237,39 @@ const createStore = () => {
             },
 
             signup(context, payload){
+                const data = payload;
+                let pos;
+                let ctx = context
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.put(`http://localhost:4000/auth/signup`, payload).then(res => {
+
+                if(!navigator.geolocation){
+                    return "Sorry, Your Browser does not support location"
+                  }
+
+                  navigator.geolocation.getCurrentPosition(poss => {
+                   pos = poss;
+                   console.log(pos)
+                   return axios.put(`http://localhost:4000/auth/signup`, {...data, lat: pos.coords.latitude, lon: pos.coords.longitude, dateTime : new Date()}).then(res => {
                     context.commit('setLoading', false);
-                    console.log(res);
-                }).catch(err => {
+                  }).catch(err => {
                     context.commit('setLoading', false);
-                    context.commit('setError', err.response.data.message);
-                });
+                      console.log(err)
+                  });
+                  },err => {
+                    context.commit('setLoading', false);  
+                    context.commit('setError', err.message);
+                  },{enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }   )
+
+
+
+                // return axios.put(`http://localhost:4000/auth/signup`, payload).then(res => {
+                //     context.commit('setLoading', false);
+                //     console.log(res);
+                // }).catch(err => {
+                //     context.commit('setLoading', false);
+                //     context.commit('setError', err.response.data.message);
+                // });
             },
         
 

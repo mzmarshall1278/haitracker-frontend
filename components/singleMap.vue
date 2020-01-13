@@ -30,7 +30,7 @@ export default {
       
   },
   mounted() {
-    this.map = L.map("mapContainer").setView([ this.lon, this.lat], 6);
+    this.map = L.map("mapContainer").setView([ this.lon, this.lat], 15);
     L.marker([this.lon, this.lat],
 //     {
 //     icon: new L.DivIcon({

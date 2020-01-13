@@ -57,7 +57,7 @@ export default {
     short_name : 'HaiTracker', 
     name :  'HaiTracker',
     start_url : '/',
-    theme_color : 'purple',
+    theme_color : '#311B92',
   },
   /*
   ** Axios module configuration

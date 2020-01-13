@@ -1,15 +1,15 @@
 <template>
   
   <div class>
-      <v-toolbar height="100" class="marshall"  black> 
-      <v-toolbar-title><span class="tile">HaiTracker</span> </v-toolbar-title>
+      <v-toolbar height="100" class="white--text" dark > 
+      <v-toolbar-title><span class="title">HaiTracker</span> </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
-        <v-btn text @click="login">Login</v-btn>
-        <v-btn text>Sign Up</v-btn>
-        <!-- <v-btn text>About</v-btn> -->
+        <v-btn v-if="!user" text @click="login">Login</v-btn>
+        <v-btn v-if="!user" text @click="signup">Sign Up</v-btn>
+        <v-btn v-if="user" text @click="userGo">Go to my account</v-btn>
       </v-toolbar-items>
 
       <!-- <template v-if="$vuetify.breakpoint.smAndUp">
@@ -27,29 +27,43 @@
       <v-parallax :src="image"  height="1000">
           <h1 class="white--text text-center" > Find Your Friends</h1>
       </v-parallax>
-      
+    <h3 class="down">&copy; Marshall Technology&trade; 2020 </h3>      
 
   </div>
 </template>
 <script>
 export default {
+   middleware:[
+    'checkAuth',
+    ],
     data(){
         return {
             image : require('../assets/map.png')
-        }
-    
+       }    
+},
+computed:{
+  user(){
+    return this.$store.getters.user
+  }
 },
 methods:{
   login(){
     this.$router.push('/auth/login')
+  },
+  signup(){
+    this.$router.push('/auth/signup')
+  },
+  userGo(){
+    this.$router.push('/home')
   }
 }
    
 }
 </script>
 <style>
-.tile{
-    color :  #400379;
+
+.title{
+    color :  white;
   text-shadow: 0 0 3px white,
                0 0 6px white,
                0 0 9px white,
@@ -57,8 +71,16 @@ methods:{
                0 0 15px white,
                0 0 18px white,
                0 0 21px white;
-  font-size: 1.5em;
+  
   font-weight: bolder;  
+  font-family: 'Courier New', Courier, monospace;
   padding: 10px;  
+}
+.down{
+  color : purple;
+  text-align: center;
+  width : 100%;
+  padding-bottom: 3px;
+  margin-top: -40px
 }
 </style>
