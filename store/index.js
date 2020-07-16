@@ -69,7 +69,7 @@ const createStore = () => {
                     pos = poss;
                     user = context.state.user
                     console.log(poss);
-                    return axios.put(`https://haitracker-server.herokuapp.com/locations/${user}`, {lat : pos.coords.latitude, lon : pos.coords.longitude, address, dateTime : new Date},{
+                    return axios.put(`process.env.server/locations/${user}`, {lat : pos.coords.latitude, lon : pos.coords.longitude, address, dateTime : new Date},{
                         headers:{
                             Authorization: `Bearer ${context.state.token}`
                         }
@@ -87,7 +87,7 @@ const createStore = () => {
             getTeam(context){
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.get(`https://haitracker-server.herokuapp.com/team/${context.state.user}`, {
+                return axios.get(`process.env.server/team/${context.state.user}`, {
                     headers:{
                         Authorization: `Bearer ${context.state.token}`
                     }
@@ -120,7 +120,7 @@ const createStore = () => {
                 // console.log(context)
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.get(`https://haitracker-server.herokuapp.com/team/getSentRequests/${context.state.user}`, {
+                return axios.get(`process.env.server/team/getSentRequests/${context.state.user}`, {
                     headers:{
                         Authorization: `Bearer ${context.state.token}`
                     }
@@ -137,7 +137,7 @@ const createStore = () => {
             getRecievedRequests(context){
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.get(`https://haitracker-server.herokuapp.com/team/getRecievedRequests/${context.state.user}`, {
+                return axios.get(`process.env.server/team/getRecievedRequests/${context.state.user}`, {
                     headers:{
                         Authorization: `Bearer ${context.state.token}`
                     }
@@ -154,7 +154,7 @@ const createStore = () => {
             acceptRequest(context, payload){
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.put(`https://haitracker-server.herokuapp.com/team/acceptRequest/${context.state.user}`, payload, {
+                return axios.put(`process.env.server/team/acceptRequest/${context.state.user}`, payload, {
                     headers:{
                         Authorization: `Bearer ${context.state.token}`
                     }
@@ -171,7 +171,7 @@ const createStore = () => {
             cancelRequest(context, payload){
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.put(`https://haitracker-server.herokuapp.com/team/cancelRequest/${context.state.user}`, payload, {
+                return axios.put(`process.env.server/team/cancelRequest/${context.state.user}`, payload, {
                     headers:{
                         Authorization: `Bearer ${context.state.token}`
                     }
@@ -188,7 +188,7 @@ const createStore = () => {
             declineRequest(context, payload){
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.put(`https://haitracker-server.herokuapp.com/team/declineRequest/${context.state.user}`, payload, {
+                return axios.put(`process.env.server/team/declineRequest/${context.state.user}`, payload, {
                     headers:{
                         Authorization: `Bearer ${context.state.token}`
                     }
@@ -250,7 +250,7 @@ const createStore = () => {
                   navigator.geolocation.getCurrentPosition(poss => {
                    pos = poss;
                    console.log(pos)
-                   return axios.put(`https://haitracker-server.herokuapp.com/auth/signup`, {...data, lat: pos.coords.latitude, lon: pos.coords.longitude, dateTime : new Date()}).then(res => {
+                   return axios.put(`process.env.server/auth/signup`, {...data, lat: pos.coords.latitude, lon: pos.coords.longitude, dateTime : new Date()}).then(res => {
                     context.commit('setLoading', false);
                   }).catch(err => {
                     context.commit('setLoading', false);
@@ -267,7 +267,7 @@ const createStore = () => {
             login(context, payload){
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.put(`https://haitracker-server.herokuapp.com/auth/login`, payload).then(res => {
+                return axios.put(`process.env.server/auth/login`, payload).then(res => {
                     
                     console.log(res);
                     const hours = 60 * 60 * 5;
@@ -290,7 +290,7 @@ const createStore = () => {
             requestConnection(context, payload){
                 context.commit('setLoading', true);
                 context.commit('clearError');
-                return axios.put(`https://haitracker-server.herokuapp.com/team/sendRequest?userId=${context.state.user}`, payload, {
+                return axios.put(`process.env.server/team/sendRequest?userId=${context.state.user}`, payload, {
                     headers:{
                         Authorization: `Bearer ${context.state.token}`
                     }

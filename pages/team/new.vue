@@ -40,8 +40,8 @@
                 >
                 Send Request
                 </v-btn>
-                
-                
+
+
             </v-form>
         </v-card>
 
@@ -50,7 +50,7 @@
 <script>
 export default {
     middleware:[
-    'checkAuth',    
+    'checkAuth',
     'Auth'
     ],
     data(){
@@ -82,17 +82,17 @@ export default {
 
           const cred = {
               searchedUser : this.email,
-              personIs : this.personIs, 
+              personIs : this.personIs,
               youAre : this.youAre,
           }
-          
+
             return this.$store.dispatch('requestConnection', cred ).then(()=>{
                 if(!this.err){
                     this.$router.push('/team')
                 this.$refs.form.reset()
                 }
-          })    
-          
+          })
+
             }
         }
     }
